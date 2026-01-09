@@ -462,9 +462,12 @@
         }
         // 事件监听
         document.addEventListener('keydown', handleKeyDown);
-        document.addEventListener('touchstart', handleTouchStart, { passive: false });
-        document.addEventListener('touchmove', handleTouchMove, { passive: false });
-        document.addEventListener('touchend', handleTouchEnd, { passive: false });
+
+        // 只在游戏区域添加触摸事件，避免影响按钮
+        const gameContainer = document.querySelector('.game-container');
+        gameContainer.addEventListener('touchstart', handleTouchStart, { passive: false });
+        gameContainer.addEventListener('touchmove', handleTouchMove, { passive: false });
+        gameContainer.addEventListener('touchend', handleTouchEnd, { passive: false });
         window.addEventListener('resize', function () {
             // 只有在游戏未结束时才调整大小
             if (!gameState.gameOver) {
