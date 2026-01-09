@@ -1,9 +1,292 @@
 <!DOCTYPE html>
-<html>
-<head><title>MC测试页</title></head>
-<body style="text-align:center; padding:50px;">
-  <h1>GameText1 测试成功!</h1>
-  <p>访问的是 GitHub Pages 部署的网页，不是仓库代码~</p>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>游戏展示页面</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .game-card {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .game-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .game-card h2 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #667eea;
+        }
+
+        .game-card p {
+            margin-bottom: 15px;
+            color: #555;
+            font-size: 0.95rem;
+        }
+
+        .game-preview {
+            margin: 15px 0;
+            text-align: center;
+        }
+
+        .game-preview img {
+            width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .game-features {
+            list-style: none;
+            margin: 15px 0;
+        }
+
+        .game-features li {
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+            font-size: 0.9rem;
+        }
+
+        .game-features li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .buttons {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 0.95rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            flex: 1;
+            min-width: 120px;
+            text-align: center;
+        }
+
+        .btn:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #667eea;
+            color: #667eea;
+        }
+
+        .btn-outline:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .github-section {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+        }
+
+        .github-section h2 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #667eea;
+        }
+
+        .github-section p {
+            margin-bottom: 25px;
+            font-size: 1.1rem;
+            color: #555;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 30px;
+            color: #777;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .games-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .github-section h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>游戏展示</h1>
+            <p class="subtitle">探索我们的网页游戏集合</p>
+        </header>
+
+        <div class="games-grid">
+            <!-- 游戏卡片 1 -->
+            <div class="game-card">
+                <h2>贪吃蛇游戏</h2>
+                <p>经典的贪吃蛇游戏实现，使用 HTML5 Canvas 和 JavaScript 开发。控制蛇移动吃食物，随着蛇身长度增加，游戏难度也会提高。</p>
+
+                <div class="game-preview">
+                    <img src="https://neeko-copilot.bytedance.net/api/text2image?prompt=snake%20game%20screenshot%20with%20green%20snake%20on%20black%20background%20eating%20red%20food&size=600x400"
+                        alt="贪吃蛇游戏截图">
+                </div>
+
+                <ul class="game-features">
+                    <li>经典贪吃蛇玩法</li>
+                    <li>实时分数记录</li>
+                    <li>游戏结束检测</li>
+                    <li>方向键控制</li>
+                    <li>响应式设计</li>
+                </ul>
+
+                <div class="buttons">
+                    <a href="snake.html" class="btn">玩游戏</a>
+                    <a href="snake.html" class="btn btn-outline">查看代码</a>
+                </div>
+            </div>
+
+            <!-- 游戏卡片 2 -->
+            <div class="game-card">
+                <h2>游戏名称 2</h2>
+                <p>简短的游戏描述，介绍游戏的基本玩法和特色。</p>
+
+                <div class="game-preview">
+                    <img src="https://neeko-copilot.bytedance.net/api/text2image?prompt=game%20screenshot%20placeholder%20with%20colorful%20interface&size=600x400"
+                        alt="游戏截图">
+                </div>
+
+                <ul class="game-features">
+                    <li>特色功能 1</li>
+                    <li>特色功能 2</li>
+                    <li>特色功能 3</li>
+                </ul>
+
+                <div class="buttons">
+                    <a href="#" class="btn">玩游戏</a>
+                    <a href="#" class="btn btn-outline">查看代码</a>
+                </div>
+            </div>
+
+            <!-- 游戏卡片 3 -->
+            <div class="game-card">
+                <h2>游戏名称 3</h2>
+                <p>简短的游戏描述，介绍游戏的基本玩法和特色。</p>
+
+                <div class="game-preview">
+                    <img src="https://neeko-copilot.bytedance.net/api/text2image?prompt=game%20screenshot%20placeholder%20with%20colorful%20interface&size=600x400"
+                        alt="游戏截图">
+                </div>
+
+                <ul class="game-features">
+                    <li>特色功能 1</li>
+                    <li>特色功能 2</li>
+                    <li>特色功能 3</li>
+                </ul>
+
+                <div class="buttons">
+                    <a href="#" class="btn">玩游戏</a>
+                    <a href="#" class="btn btn-outline">查看代码</a>
+                </div>
+            </div>
+        </div>
+
+        <section class="github-section">
+            <h2>在 GitHub 上查看</h2>
+            <p>您可以在 GitHub 上查看完整的游戏代码，下载游戏文件，或者贡献您的改进。</p>
+            <a href="https://github.com/yourusername/games-collection" target="_blank" class="btn">访问 GitHub 仓库</a>
+        </section>
+
+        <footer class="footer">
+            <p>&copy; 2026 游戏展示页面 | 由 GitHub Pages 托管</p>
+        </footer>
+    </div>
 </body>
 
 </html>
