@@ -56,64 +56,9 @@
             color: #666;
         }
 
-        /* 虚拟方向键样式 */
-        .virtual-controls {
-            display: none;
-            margin-top: 20px;
-            max-width: 300px;
-        }
-
-        .dpad {
-            display: grid;
-            grid-template-areas:
-                ". up ."
-                "left down right";
-            grid-gap: 10px;
-            justify-content: center;
-        }
-
-        .dpad-btn {
-            width: 80px;
-            height: 80px;
-            border: 2px solid #333;
-            border-radius: 10px;
-            background-color: #f0f0f0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            font-weight: bold;
-            cursor: pointer;
-            touch-action: manipulation;
-        }
-
-        .dpad-btn:active {
-            background-color: #ddd;
-            transform: scale(0.95);
-            transition: transform 0.1s ease;
-        }
-
-        .dpad-up {
-            grid-area: up;
-        }
-
-        .dpad-down {
-            grid-area: down;
-        }
-
-        .dpad-left {
-            grid-area: left;
-        }
-
-        .dpad-right {
-            grid-area: right;
-        }
-
-        /* 响应式布局 */
-        @media (max-width: 768px) {
-            .virtual-controls {
-                display: block;
-            }
+        /* 禁用默认触摸行为 */
+        * {
+            touch-action: none;
         }
 
         .game-over {
@@ -179,21 +124,13 @@
         </div>
     </div>
 
-    <!-- 虚拟方向键 -->
-    <div class="virtual-controls">
-        <div class="dpad">
-            <div class="dpad-btn dpad-up" onclick="changeDirection('up')">↑</div>
-            <div class="dpad-btn dpad-left" onclick="changeDirection('left')">←</div>
-            <div class="dpad-btn dpad-down" onclick="changeDirection('down')">↓</div>
-            <div class="dpad-btn dpad-right" onclick="changeDirection('right')">→</div>
-        </div>
-    </div>
+
 
     <script>
         // 游戏配置
         const config = {
             gridSize: 20,
-            snakeSpeed: 10,
+            snakeSpeed: 6,
             initialLength: 3
         };
 
@@ -215,7 +152,7 @@
         function resizeCanvas() {
             const canvas = document.getElementById('gameCanvas');
             const container = document.querySelector('.game-container');
-            const maxSize = Math.min(window.innerWidth * 0.9, window.innerHeight * 0.6);
+            const maxSize = Math.min(window.innerWidth * 0.95, window.innerHeight * 0.8);
 
             // 确保画布大小是网格大小的整数倍
             const gridSize = config.gridSize;
@@ -454,43 +391,26 @@
                     break;
             }
         }
-
-        // 处理方向改变
-        function changeDirection(newDirection) {
-            switch (newDirection) {
-                case 'up':
-                    if (gameState.direction !== 'down') {
-                        gameState.nextDirection = 'up';
-                    }
-                    break;
-                case 'down':
-                    if (gameState.direction !== 'up') {
-                        gameState.nextDirection = 'down';
-                    }
-                    break;
-                case 'left':
-                    if (gameState.direction !== 'right') {
-                        gameState.nextDirection = 'left';
-                    }
-                    break;
-                case 'right':
-                    if (gameState.direction !== 'left') {
-                        gameState.nextDirection = 'right';
-                    }
-                    break;
-            }
-        }
-
         // 处理触摸输入
         let touchStartX = 0;
         let touchStartY = 0;
 
         function handleTouchStart(event) {
+            // 阻止默认行为，防止页面滚动和返回
+            event.preventDefault();
             touchStartX = event.touches[0].clientX;
             touchStartY = event.touches[0].clientY;
         }
 
+        function handleTouchMove(event) {
+            // 阻止默认行为，防止页面滚动和返回
+            event.preventDefault();
+        }
+
         function handleTouchEnd(event) {
+            // 阻止默认行为，防止页面滚动和返回
+            event.preventDefault();
+
             if (!touchStartX || !touchStartY) {
                 return;
             }
@@ -501,31 +421,33 @@
             const diffX = touchStartX - touchEndX;
             const diffY = touchStartY - touchEndY;
 
-            // 确定滑动方向
-            if (Math.abs(diffX) > Math.abs(diffY)) {
-                // 水平滑动
-                if (diffX > 0) {
-                    // 向左滑动
-                    if (gameState.direction !== 'right') {
-                        gameState.nextDirection = 'left';
+            // 确定滑动方向，只在滑动距离足够大时才响应
+            if (Math.abs(diffX) > 30 || Math.abs(diffY) > 30) {
+                if (Math.abs(diffX) > Math.abs(diffY)) {
+                    // 水平滑动
+                    if (diffX > 0) {
+                        // 向左滑动
+                        if (gameState.direction !== 'right') {
+                            gameState.nextDirection = 'left';
+                        }
+                    } else {
+                        // 向右滑动
+                        if (gameState.direction !== 'left') {
+                            gameState.nextDirection = 'right';
+                        }
                     }
                 } else {
-                    // 向右滑动
-                    if (gameState.direction !== 'left') {
-                        gameState.nextDirection = 'right';
-                    }
-                }
-            } else {
-                // 垂直滑动
-                if (diffY > 0) {
-                    // 向上滑动
-                    if (gameState.direction !== 'down') {
-                        gameState.nextDirection = 'up';
-                    }
-                } else {
-                    // 向下滑动
-                    if (gameState.direction !== 'up') {
-                        gameState.nextDirection = 'down';
+                    // 垂直滑动
+                    if (diffY > 0) {
+                        // 向上滑动
+                        if (gameState.direction !== 'down') {
+                            gameState.nextDirection = 'up';
+                        }
+                    } else {
+                        // 向下滑动
+                        if (gameState.direction !== 'up') {
+                            gameState.nextDirection = 'down';
+                        }
                     }
                 }
             }
@@ -534,11 +456,11 @@
             touchStartX = 0;
             touchStartY = 0;
         }
-
         // 事件监听
         document.addEventListener('keydown', handleKeyDown);
-        document.addEventListener('touchstart', handleTouchStart, { passive: true });
-        document.addEventListener('touchend', handleTouchEnd, { passive: true });
+        document.addEventListener('touchstart', handleTouchStart, { passive: false });
+        document.addEventListener('touchmove', handleTouchMove, { passive: false });
+        document.addEventListener('touchend', handleTouchEnd, { passive: false });
         window.addEventListener('resize', function () {
             // 只有在游戏未结束时才调整大小
             if (!gameState.gameOver) {
