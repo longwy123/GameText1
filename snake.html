@@ -56,9 +56,13 @@
             color: #666;
         }
 
-        /* 禁用默认触摸行为 */
-        * {
+        /* 禁用默认触摸行为，但允许按钮点击 */
+        body {
             touch-action: none;
+        }
+
+        .btn {
+            touch-action: auto;
         }
 
         .game-over {
