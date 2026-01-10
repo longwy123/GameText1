@@ -363,6 +363,35 @@
             transition: transform var(--transition-fast);
         }
 
+        /* 导航项动画和下划线效果 */
+        .nav-item {
+            position: relative;
+            transition: all var(--transition-fast);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: var(--spacing-xs) var(--spacing-md);
+            border-radius: var(--border-radius-sm);
+            flex: 1;
+            min-width: 80px;
+        }
+
+        .nav-item::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-color);
+            transition: width var(--transition-fast);
+        }
+
+        .nav-item.active::after {
+            width: 20px;
+        }
+
         /* 键盘导航和焦点状态 */
         *:focus-visible {
             outline: 2px solid var(--primary-color);
@@ -534,6 +563,43 @@
                 <span>我的</span>
             </a>
         </nav>
+
+        <script>
+            // 导航栏激活状态管理 - 尽早执行以减少抖动
+            (function () {
+                // 当DOM准备就绪时执行
+                function updateNavStatus() {
+                    // 获取当前页面路径
+                    const currentPath = window.location.pathname;
+                    const currentPage = currentPath.split('/').pop() || 'index.html';
+
+                    // 获取所有导航项
+                    const navItems = document.querySelectorAll('.bottom-nav .nav-item');
+
+                    if (navItems.length > 0) {
+                        // 移除所有激活状态
+                        navItems.forEach(item => {
+                            item.classList.remove('active');
+                        });
+
+                        // 设置当前页面的导航项为激活状态
+                        navItems.forEach(item => {
+                            const linkPath = item.getAttribute('href');
+                            if (linkPath === currentPage) {
+                                item.classList.add('active');
+                            }
+                        });
+                    }
+                }
+
+                // 尝试立即执行，如果DOM未就绪则使用DOMContentLoaded
+                if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', updateNavStatus);
+                } else {
+                    updateNavStatus();
+                }
+            })();
+        </script>
     </div>
 </body>
 

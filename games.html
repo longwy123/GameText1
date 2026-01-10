@@ -338,12 +338,42 @@
             transition: transform var(--transition-fast);
         }
 
+        /* 导航项动画和下划线效果 */
+        .nav-item {
+            position: relative;
+            transition: all var(--transition-fast);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: var(--spacing-xs) var(--spacing-md);
+            border-radius: var(--border-radius-sm);
+            flex: 1;
+            min-width: 80px;
+        }
+
+        .nav-item::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-color);
+            transition: width var(--transition-fast);
+        }
+
+        .nav-item.active::after {
+            width: 20px;
+        }
+
         /* 动画 */
         @keyframes fadeInDown {
             from {
                 opacity: 0;
                 transform: translateY(-20px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -355,6 +385,7 @@
                 opacity: 0;
                 transform: translateY(20px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -470,7 +501,7 @@
         <main>
             <div class="games-grid" aria-labelledby="games-heading">
                 <h2 id="games-heading" class="sr-only">游戏列表</h2>
-                
+
                 <!-- 游戏卡片 1 -->
                 <article class="game-card" aria-labelledby="game-1-title">
                     <h2 id="game-1-title">贪吃蛇游戏</h2>
@@ -543,7 +574,8 @@
             <section class="github-section" aria-labelledby="github-heading">
                 <h2 id="github-heading">在 GitHub 上查看</h2>
                 <p>您可以在 GitHub 上查看完整的游戏代码，下载游戏文件，或者贡献您的改进。</p>
-                <a href="https://github.com/yourusername/games-collection" target="_blank" class="btn" aria-label="访问 GitHub 仓库">访问 GitHub 仓库</a>
+                <a href="https://github.com/yourusername/games-collection" target="_blank" class="btn"
+                    aria-label="访问 GitHub 仓库">访问 GitHub 仓库</a>
             </section>
         </main>
 
@@ -566,6 +598,43 @@
                 <span>我的</span>
             </a>
         </nav>
+
+        <script>
+            // 导航栏激活状态管理 - 尽早执行以减少抖动
+            (function () {
+                // 当DOM准备就绪时执行
+                function updateNavStatus() {
+                    // 获取当前页面路径
+                    const currentPath = window.location.pathname;
+                    const currentPage = currentPath.split('/').pop() || 'index.html';
+
+                    // 获取所有导航项
+                    const navItems = document.querySelectorAll('.bottom-nav .nav-item');
+
+                    if (navItems.length > 0) {
+                        // 移除所有激活状态
+                        navItems.forEach(item => {
+                            item.classList.remove('active');
+                        });
+
+                        // 设置当前页面的导航项为激活状态
+                        navItems.forEach(item => {
+                            const linkPath = item.getAttribute('href');
+                            if (linkPath === currentPage) {
+                                item.classList.add('active');
+                            }
+                        });
+                    }
+                }
+
+                // 尝试立即执行，如果DOM未就绪则使用DOMContentLoaded
+                if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', updateNavStatus);
+                } else {
+                    updateNavStatus();
+                }
+            })();
+        </script>
     </div>
 </body>
 
